@@ -6,4 +6,4 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass1234
-      POSTGRES_DB: testdb
+      POSTGRES_DB: mydb
