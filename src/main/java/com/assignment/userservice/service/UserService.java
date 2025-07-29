@@ -1,7 +1,10 @@
 package com.assignment.userservice.service;
 
+import com.assignment.userservice.dto.UserResponse;
+import com.assignment.userservice.dto.UserSignupRequest;
+
 public interface UserService {
 
-    public Long register();
+    UserResponse register(UserSignupRequest request);
 
 }
