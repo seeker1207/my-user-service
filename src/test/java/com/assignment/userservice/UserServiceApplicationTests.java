@@ -101,9 +101,7 @@ class UserServiceApplicationTests {
         userService.register(request);
 
         // when & then
-        assertThrows(DuplicationUserException.class, () -> {
-            userService.register(request);
-        });
+        assertThrows(DuplicationUserException.class, () -> userService.register(request));
     }
 
     @Test
@@ -126,9 +124,7 @@ class UserServiceApplicationTests {
         request.setUserId("testuser2");
 
         // when & then
-        assertThrows(DuplicationUserException.class, () -> {
-            userService.register(request);
-        });
+        assertThrows(DuplicationUserException.class, () -> userService.register(request));
     }
 
     @Test
@@ -183,9 +179,9 @@ class UserServiceApplicationTests {
         String nonExistentUserId = "nonexistent";
 
         // when & then
-        assertThrows(UserNotFoundException.class, () -> {
-            userService.modifyUsersPasswordAndAddress(nonExistentUserId, "newpass", "newaddress");
-        });
+        assertThrows(UserNotFoundException.class, () ->
+                userService.modifyUsersPasswordAndAddress(nonExistentUserId, "newpass", "newaddress")
+        );
     }
 
     @Test
@@ -212,9 +208,7 @@ class UserServiceApplicationTests {
         String nonExistentUserId = "nonexistent";
 
         // when & then
-        assertThrows(UserNotFoundException.class, () -> {
-            userService.deleteUsers(nonExistentUserId);
-        });
+        assertThrows(UserNotFoundException.class, () -> userService.deleteUsers(nonExistentUserId));
     }
 
     // 테스트 헬퍼 메서드
