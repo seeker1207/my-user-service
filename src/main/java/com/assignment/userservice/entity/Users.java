@@ -1,5 +1,6 @@
 package com.assignment.userservice.entity;
 
+import com.assignment.userservice.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,6 +32,9 @@ public class Users {
 
     @Column(nullable = false)
     private String address;
+
+    @Column(nullable = false)
+    private UserRole role;
 
     public void updatePassword(String newPassword) {
         this.password = newPassword;
