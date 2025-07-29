@@ -33,8 +33,13 @@ public class Users {
     @Column(nullable = false)
     private String address;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRole role;
+    @Builder.Default
+    private UserRole role = UserRole.USER;
+
+    @Column(nullable = false)
+    private boolean deleted = false;
 
     public void updatePassword(String newPassword) {
         this.password = newPassword;
@@ -42,5 +47,9 @@ public class Users {
 
     public void updateAddress(String newAddress) {
         this.address = newAddress;
+    }
+
+    public void delete() {
+        this.deleted = true;
     }
 }
