@@ -11,4 +11,6 @@ public interface UserRepository extends CrudRepository<Users,Long> {
 
     Optional<Users> findByUserId(String userId);
 
+    Optional<Users> findByCitizenNumber(String citizenNumber);
+
 }

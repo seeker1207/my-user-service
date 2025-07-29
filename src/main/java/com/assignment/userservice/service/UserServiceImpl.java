@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public UserResponse register(UserSignupRequest request) {
         // 중복 검증
-        validateDuplicateUsers(request.getUserId());
+        validateDuplicateUsers(request.getUserId(), request.getCitizenNumber());
         
         // 비즈니스 로직 처리
         Users user = createUsers(request);
@@ -30,9 +30,12 @@ public class UserServiceImpl implements UserService{
         return UserResponse.of(savedUsers);
     }
     
-    private void validateDuplicateUsers(String userId) {
+    private void validateDuplicateUsers(String userId, String citizenNumber) {
         if (userRepository.findByUserId(userId).isPresent()) {
             throw new DuplicationUserException("이미 존재하는 사용자 ID입니다.");
+        }
+        if (userRepository.findByCitizenNumber(citizenNumber).isPresent()) {
+            throw new DuplicationUserException("이미 존재하는 주민등록번호입니다.");
         }
     }
     
