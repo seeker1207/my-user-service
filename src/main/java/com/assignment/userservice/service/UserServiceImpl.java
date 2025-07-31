@@ -56,8 +56,13 @@ public class UserServiceImpl implements UserService{
                 new UserNotFoundException(String.format("사용자 ID '%s'를 찾을 수 없습니다.", userId)
         ));
 
-        user.updatePassword(passwordEncoder.encode(newPassword));
-        user.updateAddress(newAddress);
+        if (newPassword != null) {
+            user.updatePassword(passwordEncoder.encode(newPassword));
+        }
+        if (newAddress != null) {
+            user.updateAddress(newAddress);
+        }
+
 
         return UserResponse.of(user);
     }
