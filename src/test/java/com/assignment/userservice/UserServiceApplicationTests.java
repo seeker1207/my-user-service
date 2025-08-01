@@ -218,8 +218,8 @@ class UserServiceApplicationTests {
                     .userId("testuser" + i)
                     .password("password123")
                     .name("User " + i)
-                    .citizenNumber("990101123456" + String.format("%01d", i))
-                    .phoneNumber("0101234567" + String.format("%02d", i))
+                    .citizenNumber("99010112345" + String.format("%02d", i))
+                    .phoneNumber("010123456" + String.format("%02d", i))
                     .address("서울시 강남구")
                     .build();
             userService.register(request);

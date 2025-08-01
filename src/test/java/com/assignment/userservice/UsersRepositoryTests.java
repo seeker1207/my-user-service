@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest  // JPA 컴포넌트만 테스트하기 위한 어노테이션
 @Testcontainers
+@Transactional
 public class UsersRepositoryTests {
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest")
@@ -47,6 +49,10 @@ public class UsersRepositoryTests {
     @Autowired
     private TestEntityManager entityManager;
 
+    @BeforeEach
+    void setUp() {
+        userRepository.deleteAll();
+    }
     @Test
     @DisplayName("사용자 생성 테스트")
     void createUserTest() {
@@ -55,7 +61,7 @@ public class UsersRepositoryTests {
                 .userId("testUser")
                 .password("password123")
                 .name("Test Name")
-                .citizenNumber("1234567890123")
+                .citizenNumber("9804203210124")
                 .phoneNumber("01012345678")
                 .address("Test Address")
                 .build();
@@ -78,7 +84,7 @@ public class UsersRepositoryTests {
                 .userId("findTestUser")
                 .password("password123")
                 .name("Find Test")
-                .citizenNumber("9876543210123")
+                .citizenNumber("9804203210123")
                 .phoneNumber("01087654321")
                 .address("Find Test Address")
                 .build();
@@ -100,7 +106,7 @@ public class UsersRepositoryTests {
                 .userId("user1")
                 .password("pass1")
                 .name("User One")
-                .citizenNumber("1111111111111")
+                .citizenNumber("9804203210123")
                 .phoneNumber("01011111111")
                 .address("Address 1")
                 .build();
@@ -109,7 +115,7 @@ public class UsersRepositoryTests {
                 .userId("user2")
                 .password("pass2")
                 .name("User Two")
-                .citizenNumber("2222222222222")
+                .citizenNumber("9404203210123")
                 .phoneNumber("01022222222")
                 .address("Address 2")
                 .build();
@@ -133,7 +139,7 @@ public class UsersRepositoryTests {
                 .userId("updateUser")
                 .password("oldPassword")
                 .name("Old Name")
-                .citizenNumber("3333333333333")
+                .citizenNumber("9804203210123")
                 .phoneNumber("01033333333")
                 .address("Old Address")
                 .build();
@@ -157,7 +163,7 @@ public class UsersRepositoryTests {
                 .userId("deleteUser")
                 .password("password123")
                 .name("Delete Test")
-                .citizenNumber("4444444444444")
+                .citizenNumber("9804203210123")
                 .phoneNumber("01044444444")
                 .address("Delete Address")
                 .build();
@@ -179,7 +185,7 @@ public class UsersRepositoryTests {
                 .userId("sameUserId")
                 .password("password1")
                 .name("User One")
-                .citizenNumber("5555555555555")
+                .citizenNumber("9804203210123")
                 .phoneNumber("01055555555")
                 .address("Address 1")
                 .build();
@@ -190,7 +196,7 @@ public class UsersRepositoryTests {
                 .userId("sameUserId")
                 .password("password2")
                 .name("User Two")
-                .citizenNumber("6666666666666")
+                .citizenNumber("9804203210123")
                 .phoneNumber("01066666666")
                 .address("Address 2")
                 .build();
@@ -201,9 +207,6 @@ public class UsersRepositoryTests {
         });
     }
 
-    @BeforeEach
-    void setUp() {
-        userRepository.deleteAll();
-    }
+
 
 }
