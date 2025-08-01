@@ -34,15 +34,6 @@ public class UserServiceImpl implements UserService{
         return UserResponse.of(savedUsers);
     }
     
-    private void validateDuplicateUsers(String userId, String citizenNumber) {
-        if (userRepository.findByUserId(userId).isPresent()) {
-            throw new DuplicationUserException("이미 존재하는 사용자 ID입니다.");
-        }
-        if (userRepository.findByCitizenNumber(citizenNumber).isPresent()) {
-            throw new DuplicationUserException("이미 존재하는 주민등록번호입니다.");
-        }
-    }
-
     @Transactional(readOnly = true)
     public Page<UserResponse> searchUsers(int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
@@ -76,6 +67,15 @@ public class UserServiceImpl implements UserService{
         user.delete();
     }
 
+    private void validateDuplicateUsers(String userId, String citizenNumber) {
+        if (userRepository.findByUserId(userId).isPresent()) {
+            throw new DuplicationUserException("이미 존재하는 사용자 ID입니다.");
+        }
+        if (userRepository.findByCitizenNumber(citizenNumber).isPresent()) {
+            throw new DuplicationUserException("이미 존재하는 주민등록번호입니다.");
+        }
+    }
+
     private Users createUsers(UserSignupRequest request) {
         return Users.builder()
                 .userId(request.getUserId())
@@ -84,7 +84,6 @@ public class UserServiceImpl implements UserService{
                 .citizenNumber(request.getCitizenNumber())
                 .phoneNumber(request.getPhoneNumber())
                 .address(request.getAddress())
-                .role(UserRole.USER)  // 기본 역할 설정
                 .build();
     }
 }
