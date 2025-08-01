@@ -1,16 +1,17 @@
 package com.assignment.userservice.entity;
 
 import com.assignment.userservice.enums.UserRole;
+import com.assignment.userservice.utils.Utils;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -33,7 +34,10 @@ public class Users implements UserDetails {
     @Column(unique = true, nullable = false, length = 13, updatable = false)
     private String citizenNumber;
 
-    @Column(unique = true, nullable = false, length = 11)
+    @Column(nullable = false, columnDefinition = "DATE")
+    private LocalDate birthDate;
+
+    @Column(nullable = false, length = 11)
     private String phoneNumber;
 
     @Column(nullable = false)
@@ -41,11 +45,23 @@ public class Users implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @Builder.Default
     private UserRole role = UserRole.USER;
 
     @Column(nullable = false)
     private boolean deleted = false;
+
+    @Builder
+    public Users(String userId, String password, String name,
+                 String citizenNumber, String phoneNumber, String address) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.citizenNumber = citizenNumber;
+        this.birthDate = Utils.getBirthDateFromCitizenNumber(citizenNumber);
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
+
 
     public void updatePassword(String newPassword) {
         this.password = newPassword;
@@ -58,6 +74,7 @@ public class Users implements UserDetails {
     public void delete() {
         this.deleted = true;
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
