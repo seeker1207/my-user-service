@@ -12,6 +12,18 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+
+rabbitmq:
+  queue:
+    kakao: kakao.message.queue
+  exchange:
+    kakao: kakao.message.exchange
+  routing:
+    kakao: kakao.message.routing
 
 logging:
   level:

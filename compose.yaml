@@ -1,5 +1,5 @@
 services:
-  db:
+  db-postgres:
     image: postgres:14
     ports:
       - "5432:5432"
@@ -7,3 +7,12 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass1234
       POSTGRES_DB: mydb
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
