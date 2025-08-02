@@ -137,6 +137,10 @@ chunk 처리된 메세지 전송은 기본적으로 RabbitMQ를 통해 비동기
 
 1분당의 100회, 500회의 제한사항을 위해 RateLimeter를 이용하였습니다.
 
+## Global Exception 처리
+Global Exception 처리를 통해 일관된 오류처리를 하게 했습니다.
+Business Error, Server Error 등을 구분하여 처리했습니다.
+
 ## 테스트 
 
 Service 단과 Repository의 통합 테스트를 구축하였습니다.
