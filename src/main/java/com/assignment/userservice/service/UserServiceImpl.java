@@ -3,7 +3,6 @@ package com.assignment.userservice.service;
 import com.assignment.userservice.dto.UserResponse;
 import com.assignment.userservice.dto.UserSignupRequest;
 import com.assignment.userservice.entity.Users;
-import com.assignment.userservice.enums.UserRole;
 import com.assignment.userservice.exception.DuplicationUserException;
 import com.assignment.userservice.exception.UserNotFoundException;
 import com.assignment.userservice.repository.UserRepository;
