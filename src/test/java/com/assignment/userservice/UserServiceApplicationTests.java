@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -32,6 +33,11 @@ class UserServiceApplicationTests {
             .withDatabaseName("mydb")
             .withUsername("user")
             .withPassword("pass1234");
+    @Container
+    static RabbitMQContainer rabbitMQContainer = new RabbitMQContainer("rabbitmq:3-management")
+            .withAdminUser("guest")
+            .withAdminPassword("guest")
+            .withExposedPorts(5672, 15672);
 
     @Autowired
     private UserService userService;

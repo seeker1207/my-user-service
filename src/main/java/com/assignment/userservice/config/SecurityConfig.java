@@ -42,7 +42,8 @@ public class SecurityConfig {
                 .httpBasic(basic -> basic.realmName("Basic Auth"))
                 .authorizeHttpRequests(authorize -> authorize
                         // 공개 엔드포인트 설정
-                        .requestMatchers("/api/public/**", "/auth/**").permitAll()
+                        .requestMatchers("/api/public/**",
+                                "/auth/**").permitAll()
                         // 특정 역할이 필요한 엔드포인트 설정
                         .requestMatchers("/api/admin/**").hasRole(UserRole.ADMIN.name())
                         // 그 외 모든 요청은 인증 필요
