@@ -1,5 +1,6 @@
 package com.assignment.userservice;
 
+import com.assignment.userservice.dto.UserSignupRequest;
 import com.assignment.userservice.entity.Users;
 import com.assignment.userservice.repository.UserRepository;
 import org.hibernate.exception.ConstraintViolationException;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,15 +19,14 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.awt.print.Pageable;
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest  // JPA 컴포넌트만 테스트하기 위한 어노테이션
 @Testcontainers
@@ -207,6 +209,47 @@ public class UsersRepositoryTests {
         });
     }
 
+    @Test
+    @DisplayName("생년월일 범위로 페이지네이션 조회 테스트")
+    void searchUsersByBirthDateRange_Success() {
+        // given
+        // 테스트 데이터 생성
+        List<Users> testUsers = Arrays.asList(
+                createTestUser("user1", "9001011234567"), // 1990년 1월 1일
+                createTestUser("user2", "9001011234568"), // 1990년 1월 1일
+                createTestUser("user3", "9506011234567"), // 1995년 6월 1일
+                createTestUser("user4", "9506011234568"), // 1995년 6월 1일
+                createTestUser("user5", "0001011234567"), // 2000년 1월 1일
+                createTestUser("user6", "0001011234568")  // 2000년 1월 1일
+        );
+
+        userRepository.saveAll(testUsers);
 
 
+        LocalDate startDate = LocalDate.of(1990, 1, 1);
+        LocalDate endDate = LocalDate.of(1995, 12, 31);
+        PageRequest pageRequest = PageRequest.of(0, 2); // 페이지 크기 2
+
+        // when
+        Page<Users> result = userRepository.findByBirthDateBetween(startDate, endDate, pageRequest);
+
+        // then
+        assertAll(
+                () -> assertEquals(4, result.getTotalElements(), "전체 결과 수가 4개여야 합니다"),
+                () -> assertEquals(2, result.getNumberOfElements(), "현재 페이지의 결과 수가 2개여야 합니다"),
+                () -> assertEquals(2, result.getTotalPages(), "전체 페이지 수가 2페이지여야 합니다"),
+                () -> assertTrue(result.hasNext(), "다음 페이지가 있어야 합니다")
+        );
+    }
+
+    private Users createTestUser(String userId, String citizenNumber) {
+        return Users.builder()
+                .userId(userId)
+                .password("password123")
+                .name("홍길동")
+                .citizenNumber(citizenNumber)
+                .phoneNumber("01012345678")
+                .address("서울시 강남구")
+                .build();
+    }
 }
