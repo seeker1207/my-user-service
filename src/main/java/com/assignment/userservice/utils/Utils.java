@@ -32,9 +32,24 @@ public class Utils {
         // 종료일: 2004-01-01 (만 나이 20살인 사람 중 가장 늦은 생일)
 
         LocalDate endDate = baseDate.minusYears(age);
-        LocalDate startDate = endDate.minusYears(age + 1).plusDays(1);
+        LocalDate startDate = baseDate.minusYears(age + 1).plusDays(1);
 
         return new DateRange(startDate, endDate);
     }
 
+    public static DateRange getBirthDateRangeForAgeGroup(int startAge, int endAge, LocalDate baseDate) {
+        if (startAge < 0 || endAge < 0) {
+            throw new IllegalArgumentException("나이는 0보다 작을 수 없습니다.");
+        }
+
+        // 만 나이 기준으로 계산
+        // 예: 현재 2024-01-01, 나이 20살 ~ 29살
+        // 시작일: 1995-01-02 (만 나이 29살인 사람 중 가장 빠른 생일)
+        // 종료일: 2004-01-01 (만 나이 20살인 사람 중 가장 늦은 생일)
+
+        LocalDate startDate = baseDate.minusYears(endAge + 1).plusDays(1);
+        LocalDate endDate = baseDate.minusYears(startAge);
+
+        return new DateRange(startDate, endDate);
+    }
 }
